@@ -1,65 +1,35 @@
-
-
-key = input("Enter Key : ")
-
-def encrypt(key):
-    plain_text = input("Enter Plain text : ")
-    key = key
-    # plain_text = "GEEKSFORGEEKS"
+def do_vignere(key, text, mode):
+    text_len = len(message)
     key_final=''
-    while len(key) < len(plain_text):
-        key += key
-    if len(key)-len(plain_text) > 0:
-        key_final = key[:-(len(key)-len(plain_text))]
-        print(key_final)
-    else:
-        key_final = key
+
     
+    while len(key) < text_len:  #Appends key till the length of plain_text
+        key += key 
+
+    
+    key_final = key[:-(len(key)-text_len)] if len(key)!=text_len else key #Removes the extra letters of key so that key and plain text length are same
 
     A_INDEX = ord('A')
-    cipher_text = []
-    for i in range(len(plain_text)):
-        p_index = ord(plain_text[i]) - A_INDEX
+    crypt_text = ""
+    
+    for i in range(text_len):
+        p_index = ord(text[i]) - A_INDEX
         k_index = ord(key_final[i]) - A_INDEX
 
-        e_index = (p_index+k_index)%26 
-        cipher_text.append(chr(e_index+A_INDEX))
+        e_index = (p_index+k_index)%26 if mode==1 else (p_index-k_index)%26 #Main Logic for encryption and decryption
 
-    cipher_text = "".join(cipher_text)
-    return cipher_text
+        crypt_text += chr(e_index+A_INDEX)
 
-def decrypt(key):
-    cipher_text = input("Enter cipher text : ")
+    return crypt_text
     
-    while len(key) < len(cipher_text):
-        key += key
 
-    if len(key)-len(cipher_text) > 0:
-        key_final = key[:-(len(key)-len(cipher_text))]
-        print(key_final)
-    else:
-        key_final = key
-
-    A_INDEX = ord('A')
-    plain_text = []
-    for i in range(len(cipher_text)):
-        c_index = ord(cipher_text[i]) - A_INDEX
-        k_index = ord(key_final[i]) - A_INDEX
-
-        e_index = (c_index-k_index)%26 
-        plain_text.append(chr(e_index+A_INDEX))
-
-    plain_text = "".join(plain_text)
-    return plain_text
-    
 print("---CHOOSE MODE---")
 print("[1] ENCRYPT")
 print("[2] DECRYPT")
 mode = int(input("Enter Number : "))
+if mode!=1 and mode!=2:
+    print("Wrong Mode\n")
+message = input("Enter Message : ").strip().upper()
+key = input("Enter Key : ").strip().upper()
 
-if mode==1:
-    print("CIPHER : ",encrypt(key))
-elif mode==2:
-    print("PLAIN : ",decrypt(key))
-else:
-    print("Invalid Number")
+print(do_vignere(key, message, mode))
