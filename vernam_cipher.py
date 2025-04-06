@@ -12,8 +12,8 @@ def do_vernam(key, text):
         p_index = ord(text[i])-A_index
         k_index = ord(key_final[i])-A_index
 
-        e_index = p_index^k_index
-        e_index = e_index-26 if e_index>=26 else e_index
+        e_index = ~(p_index ^ k_index)
+        e_index = e_index%26
         cipher_text += chr(e_index+A_index)
 
     return cipher_text

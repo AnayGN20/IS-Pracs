@@ -15,7 +15,6 @@ def create_key_matrix(key_final):
                     else:
                         key_matrix.append(current_chr)
                         break
-            # print(alphabet_counter)
     return key_matrix
 
 
